@@ -4,13 +4,16 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
@@ -54,7 +57,7 @@ public class FilePickerPlugin implements MethodCallHandler {
             if(fullPath == null)
             {
               FileOutputStream fos = null;
-              cloudFile = instance.activeContext().getCacheDir().getAbsolutePath() + "/Document";
+              cloudFile = instance.activeContext().getCacheDir().getAbsolutePath() + "/" + FileUtils.getFileName(uri, instance.activeContext());
 
               try {
                 fos = new FileOutputStream(cloudFile);
@@ -158,7 +161,9 @@ public class FilePickerPlugin implements MethodCallHandler {
         intent = new Intent(Intent.ACTION_GET_CONTENT);
       }
 
-      intent.setType(type);
+      Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath() + File.separator);
+
+      intent.setDataAndType(uri, type);
       intent.addCategory(Intent.CATEGORY_OPENABLE);
       instance.activity().startActivityForResult(intent, REQUEST_CODE);
     } else {

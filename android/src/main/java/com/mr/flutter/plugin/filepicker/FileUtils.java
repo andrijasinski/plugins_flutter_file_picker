@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -104,6 +105,8 @@ public class FileUtils {
 
     private static String getDataColumn(Context context, Uri uri, String selection,
                                         String[] selectionArgs) {
+
+        Log.d(tag, "[ppalakurthi@ctepl.com]: Give me this line of code: " + uri.getScheme());
         Cursor cursor = null;
         final String column = "_data";
         final String[] projection = {
